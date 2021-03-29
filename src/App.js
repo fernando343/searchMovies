@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
+import { Switch, Route } from 'react-router-dom'
+import { MoviesList } from './components/MoviesList';
+import { Detail } from './pages/Detail';
+import { Home } from './pages/Home';
+
 import './App.css';
 import 'bulma/css/bulma.css'
-import { Title } from './components/Title';
-import { SearchForm } from './components/SearchForm';
-import { MoviesList } from './components/MoviesList';
+import { NotFound } from './pages/NotFound';
+
 
 class App extends Component {
 
@@ -17,7 +21,7 @@ class App extends Component {
   }
 
   _renderResult() {
-    return  this.state.results.length === 0
+    return this.state.results.length === 0
       ? <p>Sorry!😥 Results not found!</p>
       : <MoviesList movies={this.state.results} />
 
@@ -26,14 +30,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Title>Search Movies</Title>
-        <div className="SearchForm-wrapper">
-          <SearchForm onResults={this._handleResults} />
-        </div>
-        {this.state.usedSearch
-          ? this._renderResult()
-          : <small>Use the form to search a movie</small>
-        }
+        <Switch>
+          <Route exact path='/' component={Home} />
+          <Route path='/detail/:movieId' component={Detail} />
+          <Route component={NotFound} />
+        </Switch>
       </div>
     );
   }
